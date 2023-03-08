@@ -27,16 +27,4 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            mail subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is success"
-                body: "Use this URL ${BUILD_URL} for more info"
-                to: "aarkay.gummadi@gmail.com"
-        }
-        failure {
-            mail subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is failed"
-                body: "Use this URL ${BUILD_URL} for more info"
-                to: "aarkay.gummadi@gmail.com"
-        }
-    }
 }
