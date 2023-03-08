@@ -16,7 +16,8 @@ pipeline {
                 jdk 'JDK_17'
             }
             steps {
-                sh export PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH"
+                sh export PATH_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+                sh export PATH="$PATH_HOME/bin"
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
