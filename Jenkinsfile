@@ -13,7 +13,7 @@ pipeline {
         }
         stage('package') {
             tools {
-                jdk 'JDK_8'
+                jdk 'JDK_17'
             }
             steps {
                 sh export PATH="/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH"
