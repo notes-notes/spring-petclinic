@@ -34,9 +34,7 @@ pipeline {
                 to: "aarkay.gummadi@gmail.com"
                 from: '@aarkay'
         }
-    }
-    pomail st {
-        failmail ure {
+        failure {
             mail subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is failed"
                 body: "Use this URL ${BUILD_URL}"
                 to: "aarkay.gummadi@gmail.com"
