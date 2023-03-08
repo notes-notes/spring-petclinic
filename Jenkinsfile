@@ -29,18 +29,18 @@ pipeline {
     }
     post {
         success {
-            subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is success"
-            body: "Use this URL ${BUILD_URL}"
-            to: "${GIT_AUTHOR_EMAIL}"
-            from: '@aarkay'
+            mail subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is success"
+                body: "Use this URL ${BUILD_URL}"
+                to: "${GIT_AUTHOR_EMAIL}"
+                from: '@aarkay'
         }
     }
-    post {
-        failure {
-            subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is failed"
-            body: "Use this URL ${BUILD_URL}"
-            to: "${GIT_AUTHOR_EMAIL}"
-            from: '@aarkay'
+    pomail st {
+        failmail ure {
+            mail subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is failed"
+                body: "Use this URL ${BUILD_URL}"
+                to: "${GIT_AUTHOR_EMAIL}"
+                from: '@aarkay'
         }
     }
 }
