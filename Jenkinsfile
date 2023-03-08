@@ -1,5 +1,9 @@
-pipeline  {
+pipeline {
     agent { label 'JDK_8' }
+    triggers { pollSCM ('* * * * *') }
+    parameters {
+        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean', description: 'MAVEN_GOAL'])
+    }
     stages {
         stage('vcs') {
             steps {
@@ -9,18 +13,34 @@ pipeline  {
         }
         stage('package') {
             tools {
-                jdk 'JDK_17'
+                jdk 'JDK_8'
             }
             steps {
-                sh 'mvn package'
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('post build') {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic.war',
+                archiveArtifacts artifacts: '**/target/spring-petclinic3.0.0-SNAPSHOT.jar',
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'                 
             }
+        }
+    }
+    post {
+        success {
+            subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is success",
+            body: "Use this URL ${BUILD_URL}"
+            to: "${GIT_AUTHOR_EMAIL}",
+            from: '@aarkay'
+        }
+    }
+    post {
+        failure {
+            subject: "Jenkins Build of ${JOB_NAME} with id ${BUILD_ID} is failed",
+            body: "Use this URL ${BUILD_URL}"
+            to: "${GIT_AUTHOR_EMAIL}",
+            from: '@aarkay'
         }
     }
 }
