@@ -11,11 +11,19 @@ pipeline {
                     branch: 'main'
             }
         }
+        stage('package') {
+            tools {
+                jdk 'JDK_17'
+            }
+            steps {
+                sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
         stage('sonar analysis') {
             steps {
                 // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
-                withSonarQubeEnv('SONAR_CLOUD') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic1'
+                withSonarQubeEnv('SONAR_TOKEN') {
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07'
                 }
             }
         }
