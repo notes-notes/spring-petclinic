@@ -11,24 +11,6 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage('package') {
-            tools {
-                jdk 'JDK_17'
-            }
-            steps {
-                rtMavenRun (
-                    tool: 'MAVEN_DEFAULT',
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER"
-                    
-                )
-                rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
-                )
-                sh "mvn ${params.MAVEN_GOAL}"
-            }
-        }
         stage('sonar analysis') {
             steps {
                 performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
