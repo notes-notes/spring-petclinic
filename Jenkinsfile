@@ -11,29 +11,6 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage ('Artifactory configuration') {
-            steps {
-                rtServer (
-                    id: "ARTIFACTORY_SERVER",
-                    url: 'https://jfrogforjenkins.jfrog.io/artifactory',
-                    credentialsId: 'JFROG_JENKINS'
-                )
-
-                rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
-                )
-
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
-                )
-            }
-        }
         stage('package') {
             tools {
                 jdk 'JDK_17'
@@ -49,7 +26,7 @@ pipeline {
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
                 )
-                //sh "mvn ${params.MAVEN_GOAL}"
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('sonar analysis') {
@@ -60,12 +37,12 @@ pipeline {
                 }
             }
         }
-        //stage('post build') {
-            //steps {
-               // archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
-                                 //onlyIfSuccessful: true
-                //junit testResults: '**/surefire-reports/TEST-*.xml'                 
-            //}
-        //}
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
+                                 onlyIfSuccessful: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'                 
+            }
+        }
     }
 }
