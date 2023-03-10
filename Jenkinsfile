@@ -4,7 +4,7 @@ pipeline {
     parameters {
         choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'MAVEN_GOAL')
     }
-    stages {
+    stages(mvn build) {
         stage('vcs') {
             steps {
                 git url: 'https://github.com/qtrajkumarmarch23/spring-petclinic.git',
