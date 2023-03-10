@@ -23,15 +23,17 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: 'https://jfrogforjenkins.jfrog.io/artifactory/libs-snapshot',
-                    credentialsId: 'JFROG_CLOUD'
+                    url: 'https://qtkhajamarch23.jfrog.io/artifactory',
+                    credentialsId: 'JFROG_CLOUD_ADMIN'
                 )
+
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "ARTIFACTORY_SERVER",
                     releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
                 )
+
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
                     serverId: "ARTIFACTORY_SERVER",
@@ -50,6 +52,7 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER"
+                    
                 )
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
@@ -60,7 +63,7 @@ pipeline {
         stage('sonar analysis') {
             steps {
                 // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
-                withSonarQubeEnv('SONAR_CLOUD') {
+                withSonarQubeEnv('SONAR_TOKEN') {
                     sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07'
                 }
             }
