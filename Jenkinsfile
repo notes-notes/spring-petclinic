@@ -15,7 +15,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: 'https://jfrogforjenkins.jfrog.io/artifactory/libs-snapshot',
+                    url: 'https://jfrogforjenkins.jfrog.io/artifactory',
                     credentialsId: 'JFROG_CLOUD_ADMIN'
                 )
 
