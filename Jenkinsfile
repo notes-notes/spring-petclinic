@@ -24,7 +24,7 @@ pipeline {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
                     url: 'https://jfrogforjenkins.jfrog.io/artifactory/libs-snapshot',
-                    credentialsId: 'JFROG_CLOUD_ADMIN'
+                    credentialsId: 'JFROG_CLOUD'
                 )
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
