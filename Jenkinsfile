@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'JDK_8' }
+    agent { label 'any' }
     triggers { pollSCM ('* * * * *') }
     parameters {
         choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'MAVEN_GOAL')
