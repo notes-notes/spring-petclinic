@@ -1,5 +1,5 @@
 pipeline {
-    agent 'any'
+    agent {label 'JDK_8'}
     triggers { pollSCM ('* * * * *') }
     parameters {
         choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'MAVEN_GOAL')
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('post build') {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic.jar',
+                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'                 
             }
