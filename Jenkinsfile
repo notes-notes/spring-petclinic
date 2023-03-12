@@ -19,10 +19,10 @@ pipeline {
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
-        stage('sonarqube') {
+        stage('sonarqube analysis') {
             steps {
                 withSonarQubeEnv('SONAR_CLOUD_ADMIN') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.organization=springpetclinic07'
+                    sh 'sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07''
                 }
             }
         }
