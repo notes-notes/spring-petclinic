@@ -13,7 +13,7 @@ pipeline {
         }
         stage('maven build') {
             steps {
-                echo "${params.MAVEN_GOAL}"
+                sh "${params.MAVEN_GOAL}"
             }    
         }
         stage('post build') {
