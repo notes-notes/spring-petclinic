@@ -11,14 +11,6 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage('package') {
-            tools {
-                jdk 'JDK_17'
-            }
-            steps {
-                sh "mvn ${params.MAVEN_GOAL}"
-            }
-        }
         stage ('Artifactory configuration') {
             steps {
                 rtServer (
