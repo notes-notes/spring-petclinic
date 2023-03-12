@@ -22,7 +22,7 @@ pipeline {
         stage('sonarqube analysis') {
             steps {
                 withSonarQubeEnv('SONAR_CLOUD_ADMIN') {
-                    sh 'sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07''
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07'
                 }
             }
         }
