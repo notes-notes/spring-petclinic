@@ -12,7 +12,9 @@ pipeline {
             }
         }
         stage('maven build') {
-            echo "${params.MAVEN_GOAL}"    
+            steps {
+                echo "${params.MAVEN_GOAL}"
+            }    
         }
         stage('post build') {
             steps {
