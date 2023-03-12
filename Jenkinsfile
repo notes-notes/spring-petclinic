@@ -19,6 +19,13 @@ pipeline {
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
+        stage('sonarqube') {
+            steps {
+                withSonarQubeEnv('My SonarQube Server') {
+                    sh 'mvn clean package sonar:sonar'
+                }
+            }
+        }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
