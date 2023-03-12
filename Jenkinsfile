@@ -11,7 +11,7 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage('build') {
+        stage('maven build') {
             echo "${params.MAVEN_GOAL}"    
         }
         stage('post build') {
