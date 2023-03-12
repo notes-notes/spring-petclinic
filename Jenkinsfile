@@ -19,7 +19,7 @@ pipeline {
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
-        stage ('Artifactory configuration') {
+        stage('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
@@ -57,7 +57,7 @@ pipeline {
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
                 )
-                //sh "mvn ${params.MAVEN_GOAL}"
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('post build') {
