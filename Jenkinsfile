@@ -2,7 +2,7 @@ pipeline {
     agent { label 'JDK_8' }
     triggers { pollSCM ('* * * * *') }
     parameters {
-        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'Maven Goal')
+        choice(name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'MAVEN_GOAL')
     }
     stages {
         stage('vcs') {
@@ -19,7 +19,7 @@ pipeline {
                 sh "mvn ${params.MAVEN_GOAL}"
             }
         }
-        stage('Artifactory configuration') {
+        stage ('Artifactory configuration') {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
@@ -52,19 +52,27 @@ pipeline {
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER"
-
+                    
                 )
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
                 )
-                sh "mvn ${params.MAVEN_GOAL}"
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
+        stage('sonar analysis') {
+            steps {
+                // performing sonarqube analysis with "withSonarQubeENV(<Name of Server configured in Jenkins>)"
+                withSonarQubeEnv('SONAR_TOKEN') {
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=springpetclinic07_sonar -Dsonar.organization=springpetclinic07'
+                }
             }
         }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
                                  onlyIfSuccessful: true
-                junit testResults: '**/surefire-reports/TEST-*.xml'
+                junit testResults: '**/surefire-reports/TEST-*.xml'                 
             }
         }
     }
