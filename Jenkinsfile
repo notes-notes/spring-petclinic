@@ -11,10 +11,13 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage('maven build') {
+        stage('package') {
+            tools {
+                jdk 'JDK_17'
+            }
             steps {
-                sh "${params.MAVEN_GOAL}"
-            }    
+                sh "mvn ${params.MAVEN_GOAL}"
+            }
         }
         stage('post build') {
             steps {
