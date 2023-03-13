@@ -42,6 +42,24 @@ pipeline {
                 )
             }
         }
+        stage('package') {
+            tools {
+                jdk 'JDK_17'
+            }
+            steps {
+                rtMavenRun (
+                    tool: 'MAVEN_JDK17',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                    
+                )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
+        }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
