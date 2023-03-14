@@ -13,7 +13,7 @@ pipeline {
         }
         stage('image build') {
             steps {
-                sh "mvn ${params.MAVEN_GOAL}"
+                //sh "mvn ${params.MAVEN_GOAL}"
                 sh 'docker image build -t rajkumar207/spcfor:latest .'
             }
         }
