@@ -11,19 +11,16 @@ pipeline {
                     branch: 'main'
             }
         }
-        stage('package') {
-            tools {
-                jdk 'JDK_17'
-            }
+        stage('image build') {
             steps {
                 sh "mvn ${params.MAVEN_GOAL}"
+                sh 'docker image build -t rajkumar207/spcfor:latest .'
             }
         }
-        stage('post build') {
+        stage('scan and push') {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
-                                 onlyIfSuccessful: true
-                junit testResults: '**/surefire-reports/TEST-*.xml'
+                sh 'docker image push rajkumar207/spcfor:latest'
+                sh 'docker scan rajkumar207/spcfor'
             }
         }
     }
